@@ -19,7 +19,7 @@
 </head>
 <body>
     <header class="site-header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-bottom">
+      <nav class="navbar navbar-expand-md navbar-dark bg-danger fixed-bottom">
         <div class="container">
           <a class="navbar-brand mr-4" href="/">Bulletin</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,10 +51,10 @@
                   <div class="media-body">
                     <div class="article-metadata">
                       <a class="mr-2" href="#">{{ bulletin.name }}</a>
-                      <small class="text-muted">{{ bulletin.date_posted }}</small>
+                      <small class="text-muted">{{ bulletin.date_created|date:"d F, Y" }}</small>
                     </div>
                     <h2><a class="article-title" href="#">{{ bulletin.title }}</a></h2>
-                    <p class="article-content">{{ bulletin.cost }}</p>
+                    <p class="article-content">{{ bulletin.bulletin_category }}</p>
                   </div>
                 </article>
 
