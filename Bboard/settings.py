@@ -15,12 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# The location to saving uploaded files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Any files were uploaded will be show up under this path
-MEDIA_URL = "/media/"
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -37,6 +31,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'myboardapp.apps.MyboardappConfig', # my application
+    'users.apps.UsersConfig', # my application
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,7 +119,21 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# The location to saving uploaded files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Any files were uploaded will be show up under this path
+MEDIA_URL = "/media/"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# pip install django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# redirect user to a home page after logging in
+LOGIN_REDIRECT_URL = 'home'
+# redirect user to a login page if he wants to access to a login required page
+LOGIN_URL = 'login' # url pattern name

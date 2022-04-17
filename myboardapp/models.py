@@ -16,10 +16,10 @@ from django.contrib.auth.models import User
 
 
 # here is a function which will be used as a callable
-# it will be called to obtain the upload path
-def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+# # it will be called to obtain the upload path
+# def user_directory_path(instance, filename):
+#     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+#     return 'user_{0}/{1}'.format(instance.author.id, filename)
 
 
 # Bulletins category model
@@ -32,6 +32,12 @@ class CategoryModel(models.Model):
     # we use this function to return the bulletin category of an instance
     def __str__(self):
         return f'{self.category_name}'
+    """ 
+    >>> from myboardapp.models import Bulletin
+    >>> from myboardapp.models import CategoryModel
+    >>> CategoryModel.objects.create(category_name = "Offer")
+    <CategoryModel: Offer>
+    """
 
 
 # Bulletin model
@@ -48,7 +54,7 @@ class Bulletin(models.Model):
     # it is possible to adjust a bulletin with a file
 
     # file will be saved to -> watch settings.py -> MEDIA_ROOT
-    file = models.FileField(upload_to=user_directory_path,
+    file = models.FileField(upload_to='profile_bulletins',
                                              blank=True,
                                              # null=True,
                                              )

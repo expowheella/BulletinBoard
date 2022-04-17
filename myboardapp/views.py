@@ -7,5 +7,5 @@ def home(request):
     context = {
         'bulletins': Bulletin.objects.all()
     }
-    return render(request, 'myboardapp/home.html',context)
+    return render(request, 'myboardapp/home.html', context)
 
