@@ -5,11 +5,13 @@ from .views import (
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
+    UserPostListView,
 )
 from . import views
 
 urlpatterns = [
 path('home/', PostListView.as_view(), name='home'),
+path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
 
 # Making link for each post by its primary key
     # pk - primary key

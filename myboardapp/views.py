@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
     DetailView,
@@ -26,6 +27,24 @@ class PostListView(ListView):
     # this variable <context_object_name> is passed to the template --> home.html
     context_object_name = 'bulletins_0'
     ordering = ['-date_created']
+
+    paginate_by = 2
+
+
+
+class UserPostListView(ListView):
+    model = Bulletin
+    # <app>/<model>_<viewtype>.html
+    template_name = 'myboardapp/user_posts.html'
+    # this variable <context_object_name> is passed to the template --> home.html
+    context_object_name = 'bulletins_0'
+    ordering = ['-date_created']
+    paginate_by = 2
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Bulletin.objects.filter(author=user).order_by('-date_created')
+
 
 
 class PostDetailView(DetailView):
