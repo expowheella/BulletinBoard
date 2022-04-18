@@ -1,6 +1,30 @@
 from django.urls import path
-
+from .views import (
+    PostListView,
+    PostDetailView,
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView,
+)
 from . import views
+
 urlpatterns = [
-path('home/', views.home, name='home'),
+path('home/', PostListView.as_view(), name='home'),
+
+# Making link for each post by its primary key
+    # pk - primary key
+    # int - only expect to see integers
+path('home/<int:pk>/', PostDetailView.as_view(), name='bulletin-detail'),
+# and we also make a link in template to access this detail view:
+    # {% url 'bulletin-detail' bulletin.id %}
+    # 'bulletin-detail' --> name
+    # bulletin.id --> <int:pk>
+    # template should be names as: <app.name>_detail
+# <h2><a class="article-title" href="{% url 'bulletin-detail' bulletin.id %}">{{ bulletin.title }}</a></h2>
+
+path('home/new/', PostCreateView.as_view(), name='bulletin-create'),
+
+path('home/<int:pk>/update/', PostUpdateView.as_view(), name='bulletin-update'),
+
+path('home/<int:pk>/delete/', PostDeleteView.as_view(), name='bulletin-delete'),
 ]

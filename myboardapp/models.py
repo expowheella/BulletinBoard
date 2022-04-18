@@ -2,7 +2,7 @@ from django.db import models
 
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 
 
 # User model
@@ -59,8 +59,6 @@ class Bulletin(models.Model):
                                              # null=True,
                                              )
 
-    def __str__(self):
-        return self.title
 
     # each bulletin related to some category
     # that is why we use Many-To-One field
@@ -68,3 +66,13 @@ class Bulletin(models.Model):
 
     # add bulletin created date
     date_created = models.DateTimeField(default=timezone.now)
+
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        # return the full path to a specific post as a string
+        # a name of the url-pattern --> 'bulletin-detail'
+        # kwargs --> pk - primary key of the self --> bulletin posted
+        return reverse('bulletin-detail', kwargs={'pk': self.pk})

@@ -10,7 +10,7 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
-            {% for bulletin in bulletins %}
+            {% for bulletin in bulletins_0 %}
                 <article class="media content-section">
                     <img class="rounded-circle account-img" src="{{ bulletin.author.profile.image.url }}">
                     <div class="media-body">
@@ -18,7 +18,7 @@
                       <a class="mr-2" href="#">{{ bulletin.author }}</a>
                       <small class="text-muted">{{ bulletin.date_created|date:"d F, Y" }}</small>
                     </div>
-                    <h2><a class="article-title" href="#">{{ bulletin.title }}</a></h2>
+                    <h2><a class="article-title" href="{% url 'bulletin-detail' bulletin.id %}">{{ bulletin.title }}</a></h2>
                     <p class="article-content">{{ bulletin.bulletin_category }}</p>
                   </div>
                 </article>
