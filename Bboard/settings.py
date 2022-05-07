@@ -64,6 +64,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -133,7 +135,71 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # pip install django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
+
+
+
+# authorisation/authentification
+
+# allauth application
+INSTALLED_APPS += [
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+]
+SITE_ID = 1
+
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# redirect authenticated users to LOGIN_REDIRECT_URL if True
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 # redirect user to a home page after logging in
 LOGIN_REDIRECT_URL = 'home'
+
+
+ACCOUNT_AUTHENTIFICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+# True позволит избежать дополнительных действий и активирует аккаунт сразу, как только мы перейдем по ссылке
+# False попросит подтвердить ещё раз на сайте после прохождения по ссылке
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+
+# подтверждение аккаунта через письмо на почту
+ACCOUNT_EMAIL_VRIFICATION = 'optional'
+
+ACCOUNT_UNIQUE_EMAIL = True
+
+# тема письма для подтверждения регистрации
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "From Bulat with regards. "
+# поле username необязательно
+ACCOUNT_USERNAME_REQUIRED = False
+
+# количество дней, в течение которых будет доступна ссылка на подтверждение регистрации
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'profile'
+# чтобы allauth выполнил именно эту форму при регистрации пользователя,
+# а не ту, что по умолчанию, напишем:
+ACCOUNT_FORMS = {'/accounts/signup': 'users.forms.UserUpdateForm'}
+
+
+# a user will get confirmation e-mails from the following adress
+DEFAULT_FROM_EMAIL = 'FPW-13@yandex.ru'
+EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
+EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
+EMAIL_HOST_USER = 'FPW-13'  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
+EMAIL_HOST_PASSWORD = 'dV8-Zxg-ebQ-wZ3'  # пароль от почты
+EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
+
+
+# если пользователь вышел, его перенаправит на страницу:
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
 # redirect user to a login page if he wants to access to a login required page
-LOGIN_URL = 'login' # url pattern name
+LOGIN_URL = '/accounts/login/' # url pattern name
