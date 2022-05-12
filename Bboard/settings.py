@@ -24,7 +24,16 @@ SECRET_KEY = 'django-insecure-o272xl4+_@h%zyd2ju3q4^(1-=e!xi9i^9m&)_dp)!lhctz2(m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# .replit
+ALLOWED_HOSTS = [
+'bulletinboard.exp.repl.co',
+'f2a74711-d7cc-4b7a-805f-db5cf7fe2928.id.repl.co',	
+]
+
+CSRF_TRUSTED_ORIGINS = [
+'https://bulletinboard.exp.repl.co',
+'https://f2a74711-d7cc-4b7a-805f-db5cf7fe2928.id.repl.co',	
+]
 
 
 # Application definition
@@ -157,6 +166,7 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # redirect authenticated users to LOGIN_REDIRECT_URL if True
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
@@ -172,7 +182,7 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 
 # подтверждение аккаунта через письмо на почту
-ACCOUNT_EMAIL_VRIFICATION = 'optional'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_UNIQUE_EMAIL = True
 
