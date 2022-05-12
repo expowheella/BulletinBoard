@@ -54,7 +54,7 @@ class Bulletin(models.Model):
     # it is possible to adjust a bulletin with a file
 
     # file will be saved to -> watch settings.py -> MEDIA_ROOT
-    file = models.FileField(upload_to='profile_bulletins',
+    file = models.FileField(upload_to='files/',
                                              blank=True,
                                              # null=True,
                                              )

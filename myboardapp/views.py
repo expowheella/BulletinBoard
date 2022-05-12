@@ -9,6 +9,8 @@ from django.views.generic import (
     DeleteView
 )
 from .models import Bulletin
+from django.urls import reverse_lazy
+
 
 
 def home(request):
@@ -52,14 +54,15 @@ class PostDetailView(DetailView):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    model = Bulletin
-    fields = ['title', 'content', 'bulletin_category']
+	model = Bulletin
+	fields = ['title', 'content', 'bulletin_category', 'file']
+	
+	def form_valid(self, form):
+		form.instance.author = self.request.user 	# self.object = form.save()
+		return super().form_valid(form)				# return super().form_valid(form)
+	
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-
+	
 # LoginRequiredMixin - only logged in user can update view
 # UserPassesTestMixin - only author of the post can update it
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
