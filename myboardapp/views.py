@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+ 
 from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
@@ -8,7 +10,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Bulletin
+from .models import Bulletin, CategoryModel
 from django.urls import reverse_lazy
 
 
@@ -96,3 +98,28 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == bulletin.author:  # self.request.user --> current user in the browser
             return True
         return False
+
+# оформление подписки
+@login_required
+def subscribe(request, **kwargs):
+# то есть к нам возвращается urls адрес, который мы записали в html шаблоне кнопки
+	pk = kwargs.get('pk') # post id
+	print(pk)
+	
+	bulletin_by_category = Bulletin.objects.get(id=pk).bulletin_category
+	# bulletin = Bulletin.objects.get(id=pk)Bu
+	# print(bulletin.id)
+
+	# # bulletin_by_category = Bulletin.objects.filter(bulletin_category__category_name = 'Offer')
+	# bulletin_by_category = Bulletin.objects.filter(bulletin_category = bulletin)
+	print(bulletin_by_category)
+
+	# this_category = CategoryModel.objects.filter(category_name = bulletin_by_category) # category_name = "Offer"
+	# CategoryModel.objects.all().values('id')
+	
+	# for i in bulletin_by_category:
+		# находим объекты категории, с которыми связано данное объявление,
+		# и добавляем текущего пользователя в поле subscribers моделей
+	CategoryModel.objects.get(id=1).subscribers.add(request.user)
+
+	return redirect('/home')

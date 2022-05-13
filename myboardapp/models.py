@@ -25,20 +25,20 @@ from django.urls import reverse
 # Bulletins category model
 class CategoryModel(models.Model):
     # this field is for creating bulletin category in the admin panel
-    category_name = models.CharField(max_length=255,
-                                     unique=True,
-                                     )
-
-    # we use this function to return the bulletin category of an instance
-    def __str__(self):
-        return f'{self.category_name}'
-    """ 
-    >>> from myboardapp.models import Bulletin
-    >>> from myboardapp.models import CategoryModel
-    >>> CategoryModel.objects.create(category_name = "Offer")
-    <CategoryModel: Offer>
-    """
-
+	category_name = models.CharField(max_length=255,
+									 unique=True,
+									 )
+	
+	# we use this function to return the bulletin category of an instance
+	def __str__(self):
+		return f'{self.category_name}'
+	""" 
+	>>> from myboardapp.models import Bulletin
+	>>> from myboardapp.models import CategoryModel
+	>>> CategoryModel.objects.create(category_name = "Offer")
+	<CategoryModel: Offer>
+	"""
+	subscribers = models.ManyToManyField(User, null=True, blank=True, related_name='subscriber')
 
 # Bulletin model
 class Bulletin(models.Model):
@@ -76,3 +76,7 @@ class Bulletin(models.Model):
         # a name of the url-pattern --> 'bulletin-detail'
         # kwargs --> pk - primary key of the self --> bulletin posted
         return reverse('bulletin-detail', kwargs={'pk': self.pk})
+
+
+class Comment(models.Model):
+	post = models.ForegnKey(Bulletin, related_name="" on_delete=models.CASCADE)

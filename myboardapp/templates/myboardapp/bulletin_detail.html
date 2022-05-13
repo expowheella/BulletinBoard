@@ -30,7 +30,8 @@
 		        <img class="fit-picture" src="{{ bulletin.file.url}}" width=50% height=50% onerror="this.onerror=null; this.remove()" />
 				<div>
 				<!-- Add a link to download the file -->				
-				<a href="{{ bulletin.file.url}}" download="{{ bulletin.file.url}}">Download</a>
+				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ bulletin.file.url}}" download="{{ bulletin.file.url}}">Download File</a>
+				<a class="btn btn-primary btn-sm mt-1 mb-1" href="subscribe/">React</a>			    
 				</div>				
             </article>
         </div>

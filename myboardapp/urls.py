@@ -6,6 +6,7 @@ from .views import (
     PostUpdateView,
     PostDeleteView,
     UserPostListView,
+	subscribe,
 )
 from . import views
 
@@ -29,4 +30,9 @@ path('home/new/', PostCreateView.as_view(), name='bulletin-create'),
 path('home/<int:pk>/update/', PostUpdateView.as_view(), name='bulletin-update'),
 
 path('home/<int:pk>/delete/', PostDeleteView.as_view(), name='bulletin-delete'),
+
+
+# после нажатия на эту кнопку "REACT" в шаблоне bulletin_detail, меня переносит по ссылке subscribe/
+# далее вызывается функция subscribe, которая описана во views.py
+path('home/<int:pk>/subscribe/', subscribe, name='subscription'),
 ]
