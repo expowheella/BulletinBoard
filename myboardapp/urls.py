@@ -6,7 +6,8 @@ from .views import (
     PostUpdateView,
     PostDeleteView,
     UserPostListView,
-    CommentCreateView
+    CommentCreateView,
+    CommentListView,
 )
 from . import views
 
@@ -28,6 +29,8 @@ path('home/<int:pk>/', PostDetailView.as_view(), name='bulletin-detail'),
 path('home/new/', PostCreateView.as_view(), name='bulletin-create'),
 
 path('home/<int:pk>/comment', CommentCreateView.as_view(), name='comment_create'),
+
+path('home/comments', CommentListView.as_view(), name='comment_list'),
 
 path('home/<int:pk>/update/', PostUpdateView.as_view(), name='bulletin-update'),
 

@@ -15,7 +15,7 @@
                     <img class="rounded-circle account-img" src="{{ bulletin.author.profile.image.url }}">
                     <div class="media-body">
                         <div class="article-metadata">
-                      <a class="mr-2" href="{% url 'user-posts' bulletin.author.username %}">{{ bulletin.author }}</a>
+                      <a class="mr-2" href="{% url 'user-posts' bulletin.author.username %}">{{ bulletin.username }}</a>
                       <small class="text-muted">{{ bulletin.date_created|date:"d F, Y" }}</small>
                     </div>
                     <h2><a class="article-title" href="{% url 'bulletin-detail' bulletin.id %}">{{ bulletin.title }}</a></h2>

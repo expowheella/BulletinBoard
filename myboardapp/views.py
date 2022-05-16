@@ -11,6 +11,7 @@ from django.views.generic import (
 from .models import Bulletin, Comment
 from django.urls import reverse_lazy
 from .forms import CommentForm
+from .filter import CommentFilter
 
 
 def home(request):
@@ -43,6 +44,7 @@ class UserPostListView(ListView):
     paginate_by = 2
 
     def get_queryset(self):
+        # username is passed from url
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Bulletin.objects.filter(author=user).order_by('-date_created')
 
@@ -108,3 +110,26 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == bulletin.author:  # self.request.user --> current user in the browser
             return True
         return False
+
+
+class CommentListView(LoginRequiredMixin, ListView):
+    model = Comment
+    # <app>/<model>_<viewtype>.html
+    template_name = 'myboardapp/comment_list.html'
+    context_object_name = 'comments' # we use it in template as {% for comment in comments %}
+    ordering = ['-date_added']
+    paginate_by = 3
+    # form_class = CommentForm
+
+    def get_queryset(self):
+        # user = get_object_or_404(User, username=self.kwargs.get('username'))
+        bullet_author_id = self.request.user.id # get logged-in user id because he is an author of his own posts
+        return Comment.objects.filter(bulletin_id=bullet_author_id).order_by('-date_added')  #
+        # return Comment.objects.filter(username=user.id).order_by('-date_added')
+        # return Comment.objects.filter(bulletin_id=bulletin.bulletin_id).order_by('-date_created')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = CommentFilter(self.request.GET, queryset=self.get_queryset())
+        # context['form'] = CommentForm()
+        return context
