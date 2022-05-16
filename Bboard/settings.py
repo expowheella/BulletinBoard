@@ -26,8 +26,9 @@ DEBUG = True
 
 # .replit
 ALLOWED_HOSTS = [
-'bulletinboard.exp.repl.co',
-'f2a74711-d7cc-4b7a-805f-db5cf7fe2928.id.repl.co',	
+    '127.0.0.1',
+    # 'bulletinboard.exp.repl.co',
+    # 'f2a74711-d7cc-4b7a-805f-db5cf7fe2928.id.repl.co',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -213,3 +215,4 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # redirect user to a login page if he wants to access to a login required page
 LOGIN_URL = '/accounts/login/' # url pattern name
+

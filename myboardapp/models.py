@@ -76,3 +76,20 @@ class Bulletin(models.Model):
         # a name of the url-pattern --> 'bulletin-detail'
         # kwargs --> pk - primary key of the self --> bulletin posted
         return reverse('bulletin-detail', kwargs={'pk': self.pk})
+
+
+
+class Comment(models.Model):
+    # connecting Comment model with Bulletin model
+    bulletin = models.ForeignKey(Bulletin, related_name="comments", on_delete=models.CASCADE)
+    username = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
+    body = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s - %s' % (self.bulletin.title, self.username)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('comment_create', kwargs={'pk': self.pk})

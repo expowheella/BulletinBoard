@@ -8,9 +8,9 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Bulletin
+from .models import Bulletin, Comment
 from django.urls import reverse_lazy
-
+from .forms import CommentForm
 
 
 def home(request):
@@ -33,7 +33,6 @@ class PostListView(ListView):
     paginate_by = 2
 
 
-
 class UserPostListView(ListView):
     model = Bulletin
     # <app>/<model>_<viewtype>.html
@@ -48,21 +47,34 @@ class UserPostListView(ListView):
         return Bulletin.objects.filter(author=user).order_by('-date_created')
 
 
-
 class PostDetailView(DetailView):
     model = Bulletin
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-	model = Bulletin
-	fields = ['title', 'content', 'bulletin_category', 'file']
-	
-	def form_valid(self, form):
-		form.instance.author = self.request.user 	# self.object = form.save()
-		return super().form_valid(form)				# return super().form_valid(form)
-	
+    model = Bulletin
+    fields = ['title', 'content', 'bulletin_category', 'file']
 
-	
+    def form_valid(self, form):
+        form.instance.author = self.request.user  # self.object = form.save()
+        return super().form_valid(form)  # return super().form_valid(form)
+
+    success_url = reverse_lazy('home')
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    # fields = '__all__'
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        form.instance.bulletin_id = self.kwargs['pk']  # self.object = form.save()
+        form.instance.username = self.request.user
+        return super().form_valid(form)  # return super().form_valid(form)
+
+    success_url = reverse_lazy('home')
+
+
 # LoginRequiredMixin - only logged in user can update view
 # UserPassesTestMixin - only author of the post can update it
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

@@ -6,6 +6,7 @@ from .views import (
     PostUpdateView,
     PostDeleteView,
     UserPostListView,
+    CommentCreateView
 )
 from . import views
 
@@ -25,6 +26,8 @@ path('home/<int:pk>/', PostDetailView.as_view(), name='bulletin-detail'),
 # <h2><a class="article-title" href="{% url 'bulletin-detail' bulletin.id %}">{{ bulletin.title }}</a></h2>
 
 path('home/new/', PostCreateView.as_view(), name='bulletin-create'),
+
+path('home/<int:pk>/comment', CommentCreateView.as_view(), name='comment_create'),
 
 path('home/<int:pk>/update/', PostUpdateView.as_view(), name='bulletin-update'),
 
