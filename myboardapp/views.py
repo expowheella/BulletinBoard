@@ -123,8 +123,8 @@ class CommentListView(LoginRequiredMixin, ListView):
     myFilter = CommentFilter()
 
     def get_queryset(self):
-        bullet_author_id = self.request.user.id # get logged-in user id because he is an author of his own posts
-        return Comment.objects.filter(bulletin_id=bullet_author_id).order_by('-date_added')  #
+        user_id = self.request.user.id # get logged-in user id because he is an author of his own posts
+        return Comment.objects.filter(bulletin__author_id=user_id).order_by('-date_added')  #filtering current user's bulletins and looking up the comments under these bulletins
 
 
     # filtered content
