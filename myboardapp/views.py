@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.views.generic import (
@@ -12,6 +12,7 @@ from .models import Bulletin, Comment
 from django.urls import reverse_lazy
 from .forms import CommentForm
 from .filter import CommentFilter
+
 
 
 def home(request):
@@ -138,3 +139,17 @@ class CommentListView(LoginRequiredMixin, ListView):
 
 
         return context
+
+# deleting comments
+# 1. Create CommentDeleteView
+# 2. Create comment_confirm_delete.html template
+# 3. Add a link to delete a comment into comment_list.html template
+# 4. Create route in urls.py file
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    success_url = reverse_lazy('comment_list')
+
+
+
+def accept(request, **kwargs):
+    return redirect('/home/comments')

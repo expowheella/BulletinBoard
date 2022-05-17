@@ -1,9 +1,11 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from .models import Comment, Bulletin
 # импортируем модуль для отправки писем
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
+from .views import accept
+from django.contrib.auth.models import User # User is sender
 
 @receiver(post_save, sender=Comment)
 def create_comment(sender, instance, **kwargs):
@@ -27,3 +29,8 @@ def create_comment(sender, instance, **kwargs):
     #     from_email='FPW-13@yandex.ru',
     #     recipient_list=[auth.email]
     # )
+
+@receiver(post_save, sender=User) # when a user was saved, it creates a signal
+# post_save --> this signal is received by @receiver
+def send_mail(sender, instance, **kwargs): # these arguments are passed by post_save
+    print('accepted')

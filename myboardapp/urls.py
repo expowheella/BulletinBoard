@@ -8,6 +8,8 @@ from .views import (
     UserPostListView,
     CommentCreateView,
     CommentListView,
+    CommentDeleteView,
+    accept,
 )
 from . import views
 
@@ -35,6 +37,12 @@ path('home/comments', CommentListView.as_view(), name='comment_list'),
 path('home/<int:pk>/update/', PostUpdateView.as_view(), name='bulletin-update'),
 
 path('home/<int:pk>/delete/', PostDeleteView.as_view(), name='bulletin-delete'),
+
+# accept comments where <int:pk> --> comment.id
+path('home/comments/<int:pk>/accept', accept, name='comment-accept'),
+
+# delete comments where <int:pk> --> comment.id
+path('home/comments/<int:pk>/delete', CommentDeleteView.as_view(), name='comment-delete'),
 
 # path('home/beta_comments', views.comment_list)
 ]
