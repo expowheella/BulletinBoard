@@ -35,4 +35,6 @@ path('home/comments', CommentListView.as_view(), name='comment_list'),
 path('home/<int:pk>/update/', PostUpdateView.as_view(), name='bulletin-update'),
 
 path('home/<int:pk>/delete/', PostDeleteView.as_view(), name='bulletin-delete'),
+
+# path('home/beta_comments', views.comment_list)
 ]

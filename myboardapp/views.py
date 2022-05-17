@@ -120,16 +120,21 @@ class CommentListView(LoginRequiredMixin, ListView):
     ordering = ['-date_added']
     paginate_by = 3
     # form_class = CommentForm
+    myFilter = CommentFilter()
 
     def get_queryset(self):
-        # user = get_object_or_404(User, username=self.kwargs.get('username'))
         bullet_author_id = self.request.user.id # get logged-in user id because he is an author of his own posts
         return Comment.objects.filter(bulletin_id=bullet_author_id).order_by('-date_added')  #
-        # return Comment.objects.filter(username=user.id).order_by('-date_added')
-        # return Comment.objects.filter(bulletin_id=bulletin.bulletin_id).order_by('-date_created')
 
+
+    # filtered content
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+
         context['filter'] = CommentFilter(self.request.GET, queryset=self.get_queryset())
-        # context['form'] = CommentForm()
+            # self.request.GET - get-запрос в котором указанны данные из фильтра
+            # queryset=self.get_queryset()) - это отфильтрованный кверисет экземпларов модели self -> bulletin
+
+
         return context
