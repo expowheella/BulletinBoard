@@ -12,7 +12,7 @@ from .models import Bulletin, Comment
 from django.urls import reverse_lazy
 from .forms import CommentForm
 from .filter import CommentFilter
-
+import django.dispatch
 
 
 def home(request):
@@ -151,5 +151,16 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 
 
 
+
+# declare a signal
+accepted = django.dispatch.Signal()
+
+# when we push "Accept" button at the template, it is routed to 'comment-accept' in urls.py
+# then, it calls accept function --> which sends 'accepted' signal ----> look signals.py file
 def accept(request, **kwargs):
+
+    accepted.send(sender=Comment.__class__, **kwargs) # sending signal, where Comment model is sender argument
+        # means that any changes with Comment model will send signal
+
     return redirect('/home/comments')
+
