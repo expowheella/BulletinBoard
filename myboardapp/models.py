@@ -24,8 +24,23 @@ from django.urls import reverse
 
 # Bulletins category model
 class CategoryModel(models.Model):
+
+    CHOISES = [
+        ('Танки', "Танки"),
+        ('Хилы', "Хилы"),
+        ('ДД', "ДД"),
+        ('Торговцы', "Торговцы"),
+        ('Гилдмастеры', "Гилдмастеры"),
+        ('Квестгиверы', "Квестгиверы"),
+        ('Кузнецы', "Кузнецы"),
+        ('Кожевники', "Кожевники"),
+        ('Зельевары', "Зельевары"),
+        ('Мастера заклинаний', "Мастера заклинаний"),
+    ]
+
     # this field is for creating bulletin category in the admin panel
     category_name = models.CharField(max_length=255,
+                                     choices=CHOISES,
                                      unique=True,
                                      )
 

@@ -21,7 +21,7 @@
 
             {% if filter.qs %}
             <h1 class="mb-3">Comments to {{ user.username }} ({{ page_obj.paginator.count }})</h1>
-                {% for comment in filter.qs %}
+                {% for comment in comments %}
                     <strong> {{ comment.username }} - {{ comment.bulletin.title }} </strong>
                     <br/>
                     {{ comment.body }}

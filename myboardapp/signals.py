@@ -25,12 +25,12 @@ def create_comment(sender, instance, **kwargs):
 
     print(full_url)
 
-    # send_mail(
-    #     subject=f'A new comment from "{instance.username}" is created!',
-    #     message=f'{instance.date_added.strftime("%d %m %Y")} - {instance.body [:50]}', #, {full_url}',
-    #     from_email='FPW-13@yandex.ru',
-    #     recipient_list=[auth.email]
-    # )
+    send_mail(
+        subject=f'A new comment from "{instance.username}" is created!',
+        message=f'{instance.date_added.strftime("%d %m %Y")} - {instance.body [:50]}', #{full_url}',
+        from_email='FPW-13@yandex.ru',
+        recipient_list=[auth.email]
+    )
 
 # receiving "accepted" signal from views after "accept" function was called and "accepted" signal was sent
 @receiver(accepted)
