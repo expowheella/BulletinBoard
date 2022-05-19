@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load i18n %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 style="color:#0000ff">{% "Дайджест новостей за прошедшую неделю в категории" %} {{ bulletin.bulletin_category }}!</h1>
+<table>
+    {% for bulletin in bulletins %}
+    <tr>
+        <td>
+            <a href="http://localhost:8000/">{{ bulletin.title }}</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

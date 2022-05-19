@@ -49,8 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_apscheduler', # django_apscheduler
     'django.contrib.sites',
     'django_filters',
+
 ]
 
 MIDDLEWARE = [
@@ -217,3 +219,10 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 # redirect user to a login page if he wants to access to a login required page
 LOGIN_URL = '/accounts/login/' # url pattern name
 
+
+
+"""DJANGO APPSCHEDULER"""
+# date format for apscheduler
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+# when timeout is up, the task will be taken away
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # seconds

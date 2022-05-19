@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Comment, Bulletin
+from .models import Comment, Bulletin, CategoryModel
 # импортируем модуль для отправки писем
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
@@ -8,6 +8,9 @@ from .views import accepted
 from django.contrib.auth.models import User # User is sender
 # импортируем модуль для отправки писем
 from django.core.mail import send_mail, EmailMultiAlternatives
+from datetime import date, timedelta
+from django.template.loader import render_to_string
+import Bboard.settings as settings
 
 @receiver(post_save, sender=Comment)
 def create_comment(sender, instance, **kwargs):
@@ -51,3 +54,47 @@ def comment_accepted (sender, **kwargs): # these arguments are passed by post_sa
         from_email='FPW-13@yandex.ru',
         recipient_list=[comment_auth.email]
     )
+
+
+# weekly digest of new bulletins for the subscribers
+def week_post():
+    # if date.today().weekday() == 5:  # если сегодня четверг
+        start = date.today() - timedelta(7)  # вычтем от сегодняшнего дня 7 дней. Это будет началом диапазона выборки дат
+        finish = date.today()  # сегодняшний день - конец диапазона выборки дат
+
+        # список постов, отфильтрованный по дате создания в диапазоне start и finish
+        list_of_bulletins = Bulletin.objects.filter(date_created__range=(start, finish))
+
+        # все возможные категории
+        categories = CategoryModel.objects.all()
+
+        # возьмём все возможные категории и пробежимся по ним
+        for category in categories:
+            # создадим список, куда будем собирать почтовые адреса подписчиков
+            subscribers_emails = []
+            # из списка всех пользователей
+            for user in User.objects.all():
+                # отфильтруем только тех, кто подписан на конкретную категорию, по которой идёт выборка
+                # делаем это за счёт того, что в модели CategoryModel в поле subscribers
+                # мы добавили имя обратной связи от User к CategoryModel, чтобы получить доступ
+                # ко всем связанным объектам пользователя --> related_name='subscriber'
+                user.subscriber.filter(category_name=category)
+                # добавляем в список адреса пользователей, подписанных на текущую категорию
+                subscribers_emails.append(user.email)
+
+                # укажем контекст в виде словаря, который будет рендерится в шаблоне week_posts.html
+                # html_content = render_to_string('apscheduler/week_posts.html',
+                #                                 {'posts': list_of_bulletins, 'category': category})
+
+                # формируем тело письма
+                msg = EmailMultiAlternatives(
+                    subject=f'По Вашей подписке появились новые объявления за прошедшую неделю',
+                    message=f'По Вашей подписке появились новые объявления за прошедшую неделю: http://localhost:8000/',
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=subscribers_emails,
+                )
+                # msg.attach_alternative(html_content, "text/html")
+
+        msg.send()  # отсылаем
+        print('Еженедльная рассылка успешна отправлена')
+        print(subscribers_emails)

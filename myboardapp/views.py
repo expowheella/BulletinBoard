@@ -8,11 +8,12 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Bulletin, Comment
+from .models import Bulletin, Comment, CategoryModel
 from django.urls import reverse_lazy
 from .forms import CommentForm
 from .filter import CommentFilter
 import django.dispatch
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -164,3 +165,28 @@ def accept(request, **kwargs):
 
     return redirect('/home/comments')
 
+
+# отправка писем для подписчиков по категориям
+@login_required
+def subscribe(request, **kwargs):
+    print(kwargs['pk'])
+    pk = kwargs['pk']  # 0 то же самое можно записать, как: pk = kwargs.get('pk')
+
+    my_post = Bulletin.objects.get(id=pk).bulletin_category
+    print(my_post)
+
+    # находим объекты категории, с которыми связан данный пост,
+    # и добавляем текущего пользователя в поле subscribers моделей
+    CategoryModel.objects.get(id=my_post.id).subscribers.add(request.user)
+
+    subscribers = CategoryModel.objects.filter(subscribers=request.user)
+    print(f"subscribed categories={subscribers.values()}")
+    #
+
+    print('Эта новость относится к категории:', subscribers.last())
+    print(subscribers)
+
+    print('Вы подписаны на следующие категории: ', end='')
+    for i in Bulletin.objects.filter(bulletin_category__subscribers=request.user.id): print(i, end='    ')
+    print("")
+    return redirect('/')

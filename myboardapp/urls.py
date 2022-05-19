@@ -10,11 +10,12 @@ from .views import (
     CommentListView,
     CommentDeleteView,
     accept,
+    subscribe,
 )
 from . import views
 
 urlpatterns = [
-path('home/', PostListView.as_view(), name='home'),
+path('', PostListView.as_view(), name='home'),
 path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
 
 # Making link for each post by its primary key
@@ -44,5 +45,6 @@ path('home/comments/<int:pk>/accept', accept, name='comment-accept'),
 # delete comments where <int:pk> --> comment.id
 path('home/comments/<int:pk>/delete', CommentDeleteView.as_view(), name='comment-delete'),
 
-# path('home/beta_comments', views.comment_list)
+# subscribe bulletins by category
+path('<int:pk>/subscribe', subscribe, name='bulletin-subscribe'),
 ]

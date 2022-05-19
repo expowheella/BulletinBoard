@@ -44,6 +44,8 @@ class CategoryModel(models.Model):
                                      unique=True,
                                      )
 
+    subscribers = models.ManyToManyField(User, null=True, blank=True, related_name='subscriber')
+
     # we use this function to return the bulletin category of an instance
     def __str__(self):
         return f'{self.category_name}'
