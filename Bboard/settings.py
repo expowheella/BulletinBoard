@@ -70,7 +70,7 @@ ROOT_URLCONF = 'Bboard.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], # без этого не будет работать apscheduler
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -226,3 +226,4 @@ LOGIN_URL = '/accounts/login/' # url pattern name
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 # when timeout is up, the task will be taken away
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # seconds
+

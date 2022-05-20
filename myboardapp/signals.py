@@ -83,17 +83,16 @@ def week_post():
                 subscribers_emails.append(user.email)
 
                 # укажем контекст в виде словаря, который будет рендерится в шаблоне week_posts.html
-                # html_content = render_to_string('apscheduler/week_posts.html',
-                #                                 {'posts': list_of_bulletins, 'category': category})
+                html_content = render_to_string('apscheduler/week_posts.html',
+                                                {'posts': list_of_bulletins, 'category': category})
 
                 # формируем тело письма
                 msg = EmailMultiAlternatives(
                     subject=f'По Вашей подписке появились новые объявления за прошедшую неделю',
-                    message=f'По Вашей подписке появились новые объявления за прошедшую неделю: http://localhost:8000/',
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     to=subscribers_emails,
                 )
-                # msg.attach_alternative(html_content, "text/html")
+                msg.attach_alternative(html_content, "text/html")
 
         msg.send()  # отсылаем
         print('Еженедльная рассылка успешна отправлена')

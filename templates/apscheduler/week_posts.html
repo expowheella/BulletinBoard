@@ -7,12 +7,12 @@
     <title>Title</title>
 </head>
 <body>
-<h1 style="color:#0000ff">{% "Дайджест новостей за прошедшую неделю в категории" %} {{ bulletin.bulletin_category }}!</h1>
+<h1 style="color:#0000ff">{% trans "Дайджест новостей за прошедшую неделю в категории" %} {{ bulletins_0 }}!</h1>
 <table>
-    {% for bulletin in bulletins %}
+    {% for bulletin in bulletins_0 %}
     <tr>
         <td>
-            <a href="http://localhost:8000/">{{ bulletin.title }}</a>
+            <a href="http://localhost:8000/">{{ bulletin }}</a>
         </td>
     </tr>
     {% endfor %}
