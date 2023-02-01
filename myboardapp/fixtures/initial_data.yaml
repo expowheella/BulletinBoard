@@ -1,0 +1,5 @@
+- model: sites.site
+  pk: 1
+  fields:
+    name: '127.0.0.1'
+    domain: '127.0.0.1'
